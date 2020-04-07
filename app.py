@@ -20,48 +20,43 @@ from flask_marshmallow import Marshmallow
 import os
 
 app = Flask(__name__)
-# What is this line doing?
 
 basedir = os.path.abspath(os.path.dirname(__file__))
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir, 'app.sqlite')
-# not sure what this is doing either - are these line working together or independently? 
 
 db = SQLAlchemy(app)
 ma = Marshmallow(app)
-# Looks like we are creating variables to use our imported libraries
 
-class Movie(db.Model): # What is model? Looks like we are inheriting it
-    __tablename__ = 'movies' # Creating a table named 'movies'? I'm guessing this is so we can organize our db
-    id = db.Column(db.Integer, primary_key=True) # What is the id and why is it necessary?
-    title = db.Column(db.String(100), nullable=False) # Need to have a title with a string less than 100 character long - cannot be null
+class Movie(db.Model): 
+    __tablename__ = 'movies' 
+    id = db.Column(db.Integer, primary_key=True) 
+    title = db.Column(db.String(100), nullable=False) 
     year = db.Column(db.String(4), nullable=False)
     rating = db.Column(db.String(5), nullable=False)
     genre = db.Column(db.String(20), nullable=False)
     starring = db.Column(db.String(40), nullable=False)
 
     def __init__(self, title, year, rating, genre, starring):
-        self.title = title #instantiating variables
+        self.title = title 
         self.year = year
         self.rating = rating
         self.genre = genre
         self.starring = starring
 
-class MovieSchema(ma.Schema): # What is this?
-    class Meta: # Class within a class?
+class MovieSchema(ma.Schema): 
+    class Meta: 
         fields = ('id', 'title', 'year', 'rating', 'genre', 'starring')
 
-movie_schema = MovieSchema() # I think this is more instantiation? Why the 'schema' verbage?
-movies_schema = MovieSchema(many=True) # Why do we need the 'many=True'? Just to show it is plural?
+movie_schema = MovieSchema() 
+movies_schema = MovieSchema(many=True) 
 
-# @app.route('/', methods=['GET']) # Think this is an endpoint, on homepage of server, returns the h1 tag
-# def home():
-#     return "<h1>Movie Flask API</h1>"
+
 
 # GET
-@app.route('/movies', methods=['GET']) # When run, add /movies to url and empty array appears
+@app.route('/movies', methods=['GET']) 
 def get_movies():
     all_movies = Movie.query.all()
-    result = movies_schema.dump(all_movies) # .dump?
+    result = movies_schema.dump(all_movies) 
     return jsonify(result)
 
 # Single item GET
@@ -118,9 +113,7 @@ def movie_delete(id):
 
 
 
-if __name__ == '__main__': # What is this?
+if __name__ == '__main__': 
     app.run(debug=True)
     app.run()
 
-
-# at some point, we ran 'pipenv shell', 'python3', 'import db from app', 'create_all()' - or something like that - that creats an app.sqlite file - when do we do this and why?
