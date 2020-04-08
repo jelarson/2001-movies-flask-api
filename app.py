@@ -54,6 +54,9 @@ class MovieSchema(ma.Schema):
 movie_schema = MovieSchema() 
 movies_schema = MovieSchema(many=True) 
 
+@app.route('/', methods=['GET'])
+def home():
+    return "<h1>2001 Movie Flask API - Add '/movies' to URL to see current database</h1>"
 
 
 # GET
