@@ -117,3 +117,4 @@ if __name__ == '__main__':
     app.run(debug=True)
     app.run()
 
+# obj = Movie.query.filter_by(title=movietitle).first()
